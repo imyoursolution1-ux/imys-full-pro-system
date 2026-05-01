@@ -300,8 +300,6 @@
 
   <script>
     const API = localStorage.getItem("IMYS_API_URL") || "https://imys-full-pro-system.onrender.com";
-    const UPI_ID = "9529615972@ybl";
-
     let clients = [];
     let editingId = null;
     let uploadedDocumentData = "";
@@ -381,7 +379,7 @@
     }
 
     function saveApiUrl() {
-      const value = document.getElementById("apiUrlInput").value.trim().replace(/\/$/, "");
+            const value = document.getElementById("apiUrlInput").value.trim().replace(/\/$/, "");
       if (!value) return alert("Please enter backend API URL");
       localStorage.setItem("IMYS_API_URL", value);
       alert("API URL saved. App will reload now.");
@@ -465,30 +463,36 @@
       await loadDashboard();
     }
 
+    function getReasonText(c) {
+      const reason = String(c.notes || "").trim() || String(c.contract || "").trim() || "Service payment";
+      return reason;
+    }
+
+    function buildClientMessage(c) {
+      const reason = getReasonText(c);
+      return (
+        "Dear " + (c.name || "Client") + ",\n\n" +
+        "Payment reminder from I M Your Solution.\n\n" +
+        "Service / Reason: " + reason + "\n" +
+        "Contract: " + (c.contract || "-") + "\n" +
+        "Amount Due: ₹" + (c.amount || "") + "\n" +
+        "Due Date: " + formatDateDisplay(c.dueDate || "") + "\n" +
+        "Invoice No: " + (c.invoiceNo || "") + "\n\n" +
+        "Website: https://imyoursolution.com\n\n" +
+        "Please contact us for payment confirmation or service support.\n\n" +
+        "Thank you,\n" +
+        "IMYOURSOLUTION.COM"
+      );
+    }
+
     async function sendWhatsAppById(id) {
       const c = clients.find(function(item) { return item.id === id; });
       if (!c) return;
 
       const cleanPhone = String(c.phone || "").replace(/\D/g, "");
       const finalPhone = cleanPhone.startsWith("91") ? cleanPhone : "91" + cleanPhone;
-      const serviceReason = String(c.notes || c.contract || "Service payment").trim();
 
-      const msg =
-        "Dear " + (c.name || "") + ",\n\n" +
-        "Payment reminder from I M Your Solution.\n\n" +
-        "Invoice No: " + (c.invoiceNo || "") + "\n" +
-        "Service / Reason: " + serviceReason + "\n" +
-        "Contract: " + (c.contract || "-") + "\n" +
-        "Amount Due: ₹" + (c.amount || "") + "\n" +
-        "Due Date: " + formatDateDisplay(c.dueDate || "") + "\n\n" +
-        "Website: https://imyoursolution.com\n" +
-        "Firm Name: IMYOURSOLUTION.COM\n" +
-        "UPI ID: " + UPI_ID + "\n\n" +
-        "Kindly make the payment for the above service/reason.\n" +
-        "Invoice PDF is available from our billing system.\n\n" +
-        "Thank you,\n" +
-        "I M Your Solution\n" +
-        "IMYOURSOLUTION.COM";
+      const msg = buildClientMessage(c);
 
       const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
       const waUrl = isMobile
@@ -505,6 +509,17 @@
         await loadClients();
         await loadDashboard();
       } catch(e) {}
+    }
+
+    function sendSMSById(id) {
+      const c = clients.find(function(item) { return item.id === id; });
+      if (!c) return;
+
+      const cleanPhone = String(c.phone || "").replace(/\D/g, "");
+      const msg = buildClientMessage(c);
+      const isApple = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+      const smsUrl = "sms:" + cleanPhone + (isApple ? "&" : "?") + "body=" + encodeURIComponent(msg);
+      window.location.href = smsUrl;
     }
 
     function bulkWhatsApp() {
@@ -680,7 +695,6 @@
         "<tr><th>Recurring Reminder</th><td>" + String(c.recurring || "-") + "</td></tr>" +
         "<tr><th>Notes</th><td>" + String(c.notes || "-") + "</td></tr>" +
         "</table>" +
-        "<p style='margin-top:20px;'>UPI ID: " + UPI_ID + "</p>" +
         "<p style='margin-top:20px;'>Thank you,<br>I M Your Solution</p>" +
         "</div>" +
         "<script>window.print();<\/script>" +
@@ -718,8 +732,7 @@
           "💰 ₹" + formatMoney(c.amount || 0) + " | " + (c.contract || "-"),
           "📅 Due: " + formatDateDisplay(c.dueDate || "-"),
           "🔁 Reminder: " + (c.recurring || "-"),
-          "📝 " + (c.notes || "-"),
-          "🏦 UPI ID: " + UPI_ID
+          "📝 " + (c.notes || "-")
         ].forEach(function(line) {
           const row = document.createElement("div");
           row.className = "meta-line";
@@ -737,6 +750,9 @@
 
         actions.appendChild(makeButton("📲 WhatsApp", "wa-btn", function() {
           sendWhatsAppById(c.id);
+        }));
+        actions.appendChild(makeButton("✉ Normal SMS", "small-btn", function() {
+          sendSMSById(c.id);
         }));
         actions.appendChild(makeButton("✔ Paid", "success-btn", function() {
           markPaid(c.id);
@@ -759,12 +775,6 @@
 
         card.appendChild(actions);
 
-        const qr = document.createElement("img");
-        qr.className = "qr";
-        qr.alt = "Payment QR";
-        qr.src = window.location.origin + "/default-qr.jpeg";
-        card.appendChild(qr);
-
         list.appendChild(card);
       });
 
@@ -775,7 +785,6 @@
         list.appendChild(empty);
       }
     }
-    // Service worker disabled to prevent old cache.
   </script>
 </body>
 </html>
