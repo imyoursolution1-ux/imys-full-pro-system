@@ -299,7 +299,7 @@
   </div>
 
   <script>
-    const API = localStorage.getItem("IMYS_API_URL") || "https://imys-full-pro-system.onrender.com";
+    const API = localStorage.getItem("IMYS_API_URL") || "https://imyoursolution-backend.onrender.com";
     const UPI_ID = "9529615972@ybl";
 
     let clients = [];
@@ -472,18 +472,28 @@
       const cleanPhone = String(c.phone || "").replace(/\D/g, "");
       const finalPhone = cleanPhone.startsWith("91") ? cleanPhone : "91" + cleanPhone;
 
+      const serviceReason = [c.contract || "", c.notes || ""].filter(Boolean).join(" - ");
+      const paymentRemark = serviceReason || "Professional service payment";
+      const paymentLink = "upi://pay?pa=" + UPI_ID +
+        "&pn=" + encodeURIComponent("I M Your Solution") +
+        "&am=" + encodeURIComponent(c.amount || "") +
+        "&cu=INR&tn=" + encodeURIComponent(paymentRemark);
+
       const msg =
         "Dear " + (c.name || "") + ",\n\n" +
         "Payment request from I M Your Solution.\n" +
-        "Contract: " + (c.contract || "") + "\n" +
+        "Website: https://imyoursolution.com\n\n" +
+        "Invoice No: " + (c.invoiceNo || "") + "\n" +
+        "Service / Reason: " + paymentRemark + "\n" +
         "Amount Due: ₹" + (c.amount || "") + "\n" +
-        "Due Date: " + formatDateDisplay(c.dueDate || "") + "\n" +
-        "Invoice No: " + (c.invoiceNo || "") + "\n\n" +
-        "Payment Link:\n" + "upi://pay?pa=" + UPI_ID + "&pn=" + encodeURIComponent(c.name || "Client") + "&am=" + encodeURIComponent(c.amount || "") + "&cu=INR&tn=" + encodeURIComponent(c.contract || "Payment") + "\n\n" +
+        "Due Date: " + formatDateDisplay(c.dueDate || "") + "\n\n" +
+        "Payment Link:\n" + paymentLink + "\n\n" +
         "UPI ID: " + UPI_ID + "\n\n" +
+        "Invoice PDF: Please find attached invoice / or download from our app invoice option.\n\n" +
         "Please complete your payment at the earliest.\n\n" +
         "Thank you,\n" +
-        "I M Your Solution, HAVE A NICE DAY";
+        "I M Your Solution\n" +
+        "https://imyoursolution.com";
 
       const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
       const waUrl = isMobile
