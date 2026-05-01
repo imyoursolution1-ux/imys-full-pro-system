@@ -381,7 +381,7 @@
     }
 
     function saveApiUrl() {
-      const value = document.getElementById("apiUrlInput").value.trim().replace(/\/ , "");
+      const value = document.getElementById("apiUrlInput").value.trim().replace(/\/$/, "");
       if (!value) return alert("Please enter backend API URL");
       localStorage.setItem("IMYS_API_URL", value);
       alert("API URL saved. App will reload now.");
