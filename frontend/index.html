@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>I M Your Solution</title>
+  <link rel="manifest" href="manifest.json" />
+  <style>
+    :root{
+      --primary:#0a7f5a;
+      --muted:#64748b;
+      --bg:#f4f7fb;
+      --card:#ffffff;
+      --border:#d9e0e7;
+      --shadow:0 10px 24px rgba(15,23,42,.08);
+      --paid:#dcfce7;
+      --pending:#fef3c7;
+      --sent:#dbeafe;
+      --danger:#dc2626;
+      --secondary:#475569;
+      --blue:#2563eb;
+      --wa:#25D366;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      padding: 18px;
+      background: var(--bg);
+      font-family: Arial, sans-serif;
+      color: #0f172a;
+    }
+
+    .container {
+      max-width: 1220px;
+      margin: 0 auto;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      margin-bottom: 18px;
+      text-align: center;
+      flex-wrap: wrap;
+    }
+
+    .brand img {
+      width: 90px;
+      height: 90px;
+      object-fit: contain;
+      border-radius: 16px;
+      background: white;
+      border: 1px solid var(--border);
+      padding: 8px;
+      box-shadow: var(--shadow);
+    }
+
+    .brand h1 {
+      margin: 0;
+      color: var(--primary);
+      font-size: 40px;
+      line-height: 1.1;
+    }
+
+    .brand p {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .card, .login-box, .form-box, .top-box {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+    }
+
+    .login-box, .form-box {
+      padding: 18px;
+      margin-bottom: 18px;
+    }
+
+    .hidden { display: none; }
+
+    .top-cards {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .top-box {
+      padding: 16px;
+      text-align: center;
+      font-weight: bold;
+      min-height: 78px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    input, select, textarea, button {
+      width: 100%;
+      padding: 12px 13px;
+      margin: 5px 0;
+      border: 1px solid #cfd8e3;
+      border-radius: 12px;
+      font-size: 14px;
+    }
+
+    textarea {
+      min-height: 88px;
+      resize: vertical;
+    }
+
+    button {
+      border: none;
+      color: white;
+      background: var(--primary);
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .secondary-btn { background: var(--secondary); }
+    .small-btn { background: var(--blue); }
+    .success-btn { background: #15803d; }
+    .danger-btn { background: var(--danger); }
+    .wa-btn { background: var(--wa); }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .toolbar {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+
+    .toolbar button {
+      width: auto;
+      min-width: 135px;
+      flex: 1;
+    }
+
+    .list-card {
+      padding: 18px;
+      margin-top: 14px;
+    }
+
+    .paid { background: var(--paid); }
+    .pending { background: var(--pending); }
+    .sent { background: var(--sent); }
+
+    .status-tag {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 7px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      background: rgba(255,255,255,.78);
+      border: 1px solid rgba(15,23,42,.08);
+    }
+
+    .actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 14px;
+    }
+
+    .actions button {
+      width: auto;
+      min-width: 120px;
+      flex: 1;
+    }
+
+    img.qr {
+      margin-top: 14px;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 8px;
+      background: #fff;
+      width: 170px;
+      height: 170px;
+      object-fit: contain;
+    }
+
+    .meta-line {
+      margin-top: 4px;
+      color: #1f2937;
+      font-size: 15px;
+    }
+
+    .muted {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    @media (max-width: 940px) {
+      .top-cards { grid-template-columns: repeat(2, 1fr); }
+      .grid-2 { grid-template-columns: 1fr; }
+      .brand h1 { font-size: 32px; }
+    }
+
+    @media (max-width: 560px) {
+      .top-cards { grid-template-columns: 1fr; }
+      .brand h1 { font-size: 28px; }
+      .brand img { width: 72px; height: 72px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="brand">
+      <img src="logo.png" alt="Logo">
+      <div>
+        <h1>I M Your Solution</h1>
+        <p>Simplifying Tax; Strengthening Wealth</p>
+      </div>
+    </div>
+
+    <div id="loginSection" class="login-box">
+      <h3 style="margin-top:0">Login</h3>
+      <input id="loginUser" placeholder="Username" />
+      <input id="loginPass" type="password" placeholder="Password" />
+      <button onclick="login()">Login</button>
+      <div class="muted">Demo login: admin / 1234</div>
+    </div>
+
+    <div id="appSection" class="hidden">
+      <div class="top-cards">
+        <div class="top-box" id="boxTotalClients">Clients 0</div>
+        <div class="top-box" id="boxTotalAmount">Total ₹0</div>
+        <div class="top-box" id="boxPendingAmount">Pending ₹0</div>
+        <div class="top-box" id="boxPaidAmount">Paid ₹0</div>
+        <div class="top-box" id="boxPendingCount">Pending 0</div>
+        <div class="top-box" id="boxPaidCount">Paid 0</div>
+      </div>
+
+      <div class="form-box">
+        <div class="grid-2">
+          <div><input id="search" placeholder="Search client / phone / contract / invoice" oninput="render()" /></div>
+          <div>
+            <select id="statusFilter" onchange="render()">
+              <option value="">All Status</option>
+              <option value="Pending">Pending</option>
+              <option value="Sent">Sent</option>
+              <option value="Paid">Paid</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div><input id="name" placeholder="Client Name" /></div>
+          <div><input id="phone" placeholder="Mobile Number" /></div>
+          <div><input id="amount" type="number" placeholder="Amount" /></div>
+          <div><input id="contract" placeholder="Contract Name" /></div>
+          <div><input id="dueDate" type="date" /></div>
+          <div>
+            <select id="status">
+              <option value="Pending">Pending</option>
+              <option value="Sent">Sent</option>
+              <option value="Paid">Paid</option>
+            </select>
+          </div>
+          <div>
+            <select id="recurring">
+              <option value="">Recurring Reminder</option>
+              <option value="Daily">Daily</option>
+              <option value="Weekly">Weekly</option>
+              <option value="Monthly">Monthly</option>
+            </select>
+          </div>
+          <div><input id="document" type="file" accept="image/*,.pdf" onchange="handleDocumentUpload(event)" /></div>
+        </div>
+
+        <textarea id="notes" placeholder="Notes"></textarea>
+
+        <div class="toolbar">
+          <button onclick="saveClient()">Save Client</button>
+          <button class="secondary-btn" onclick="clearForm()">Clear</button>
+          <button class="small-btn" onclick="exportCSV()">Export CSV</button>
+          <button class="wa-btn" onclick="bulkWhatsApp()">Bulk WhatsApp</button>
+          <button class="secondary-btn" onclick="saveApiUrl()">Save API URL</button>
+          <button class="secondary-btn" onclick="logout()">Logout</button>
+        </div>
+        <input id="apiUrlInput" placeholder="Backend API URL e.g. https://your-backend.onrender.com" style="margin-top:8px" />
+      </div>
+
+      <div id="list"></div>
+    </div>
+  </div>
+
+  <script>
+    const API = localStorage.getItem("IMYS_API_URL") || "https://imyoursolution-backend.onrender.com";
+    const UPI_ID = "9529615972@ybl";
+
+    let clients = [];
+    let editingId = null;
+    let uploadedDocumentData = "";
+    let uploadedDocumentName = "";
+
+    function formatMoney(value) {
+      return Number(value || 0).toLocaleString("en-IN");
+    }
+
+    function formatDateDisplay(value) {
+      if (!value) return "-";
+      const s = String(value).trim();
+      if (/^\d{4}-\d{2}-\d{2}$/.test(s)) {
+        const p = s.split("-");
+        return p[2] + "-" + p[1] + "-" + p[0];
+      }
+      if (/^\d{2}-\d{2}-\d{4}$/.test(s)) return s;
+      return s;
+    }
+
+    function toInputDate(value) {
+      if (!value) return "";
+      const s = String(value).trim();
+      if (/^\d{4}-\d{2}-\d{2}$/.test(s)) return s;
+      if (/^\d{2}-\d{2}-\d{4}$/.test(s)) {
+        const p = s.split("-");
+        return p[2] + "-" + p[1] + "-" + p[0];
+      }
+      return "";
+    }
+
+    function handleDocumentUpload(event) {
+      const file = event.target.files[0];
+      if (!file) {
+        uploadedDocumentData = "";
+        uploadedDocumentName = "";
+        return;
+      }
+      uploadedDocumentName = file.name;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        uploadedDocumentData = e.target.result || "";
+      };
+      reader.readAsDataURL(file);
+    }
+
+    async function login() {
+      const username = document.getElementById("loginUser").value.trim();
+      const password = document.getElementById("loginPass").value.trim();
+
+      const res = await fetch(API + "/api/login", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({ username, password })
+      });
+
+      if (!res.ok) {
+        alert("Invalid login");
+        return;
+      }
+
+      localStorage.setItem("imyoursolution_logged_in", "yes");
+      showApp();
+    }
+
+    function logout() {
+      localStorage.removeItem("imyoursolution_logged_in");
+      location.reload();
+    }
+
+    function showApp() {
+      document.getElementById("loginSection").classList.add("hidden");
+      document.getElementById("appSection").classList.remove("hidden");
+      document.getElementById("apiUrlInput") && (document.getElementById("apiUrlInput").value = API);
+      loadClients();
+      loadDashboard();
+    }
+
+    function saveApiUrl() {
+      const value = document.getElementById("apiUrlInput").value.trim().replace(/\/ , "");
+      if (!value) return alert("Please enter backend API URL");
+      localStorage.setItem("IMYS_API_URL", value);
+      alert("API URL saved. App will reload now.");
+      location.reload();
+    }
+
+    if (localStorage.getItem("imyoursolution_logged_in") === "yes") {
+      showApp();
+    }
+
+    function clearForm() {
+      editingId = null;
+      uploadedDocumentData = "";
+      uploadedDocumentName = "";
+      document.getElementById("name").value = "";
+      document.getElementById("phone").value = "";
+      document.getElementById("amount").value = "";
+      document.getElementById("contract").value = "";
+      document.getElementById("dueDate").value = "";
+      document.getElementById("status").value = "Pending";
+      document.getElementById("recurring").value = "";
+      document.getElementById("notes").value = "";
+      document.getElementById("document").value = "";
+    }
+
+    async function loadClients() {
+      const res = await fetch(API + "/api/clients");
+      clients = await res.json();
+      render();
+    }
+
+    async function loadDashboard() {
+      const res = await fetch(API + "/api/dashboard");
+      const data = await res.json();
+
+      document.getElementById("boxTotalClients").innerText = "Clients " + (data.totalClients || 0);
+      document.getElementById("boxTotalAmount").innerText = "Total ₹" + formatMoney(data.totalAmount || 0);
+      document.getElementById("boxPendingAmount").innerText = "Pending ₹" + formatMoney(data.pendingAmount || 0);
+      document.getElementById("boxPaidAmount").innerText = "Paid ₹" + formatMoney(data.paidAmount || 0);
+      document.getElementById("boxPendingCount").innerText = "Pending " + (data.pendingCount || 0);
+      document.getElementById("boxPaidCount").innerText = "Paid " + (data.paidCount || 0);
+    }
+
+    async function saveClient() {
+      const payload = {
+        name: document.getElementById("name").value.trim(),
+        phone: document.getElementById("phone").value.trim(),
+        amount: Number(document.getElementById("amount").value || 0),
+        contract: document.getElementById("contract").value.trim(),
+        dueDate: document.getElementById("dueDate").value.trim(),
+        status: document.getElementById("status").value,
+        recurring: document.getElementById("recurring").value,
+        notes: document.getElementById("notes").value.trim(),
+        documentName: uploadedDocumentName,
+        documentData: uploadedDocumentData
+      };
+
+      if (!payload.name || !payload.phone || !payload.amount) {
+        alert("Please fill Client Name, Mobile Number, and Amount.");
+        return;
+      }
+
+      const url = editingId ? API + "/api/clients/" + editingId : API + "/api/clients";
+      const method = editingId ? "PUT" : "POST";
+
+      const res = await fetch(url, {
+        method: method,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+
+      if (!res.ok) {
+        const err = await res.text();
+        alert("Save failed: " + err);
+        return;
+      }
+
+      alert(editingId ? "Client updated successfully ✅" : "Client saved successfully ✅");
+      clearForm();
+      await loadClients();
+      await loadDashboard();
+    }
+
+    async function sendWhatsAppById(id) {
+      const c = clients.find(function(item) { return item.id === id; });
+      if (!c) return;
+
+      const cleanPhone = String(c.phone || "").replace(/\D/g, "");
+      const finalPhone = cleanPhone.startsWith("91") ? cleanPhone : "91" + cleanPhone;
+
+      const msg =
+        "Dear " + (c.name || "") + ",\n\n" +
+        "Payment request from I M Your Solution.\n" +
+        "Contract: " + (c.contract || "") + "\n" +
+        "Amount Due: ₹" + (c.amount || "") + "\n" +
+        "Due Date: " + formatDateDisplay(c.dueDate || "") + "\n" +
+        "Invoice No: " + (c.invoiceNo || "") + "\n\n" +
+        "Payment Link:\n" + "upi://pay?pa=" + UPI_ID + "&pn=" + encodeURIComponent(c.name || "Client") + "&am=" + encodeURIComponent(c.amount || "") + "&cu=INR&tn=" + encodeURIComponent(c.contract || "Payment") + "\n\n" +
+        "UPI ID: " + UPI_ID + "\n\n" +
+        "Please complete your payment at the earliest.\n\n" +
+        "Thank you,\n" +
+        "I M Your Solution, HAVE A NICE DAY";
+
+      const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+      const waUrl = isMobile
+        ? "https://api.whatsapp.com/send?phone=" + finalPhone + "&text=" + encodeURIComponent(msg)
+        : "https://web.whatsapp.com/send?phone=" + finalPhone + "&text=" + encodeURIComponent(msg);
+
+      window.open(waUrl, "_blank");
+      try {
+        await fetch(API + "/api/clients/" + id + "/status", {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ status: "Sent" })
+        });
+        await loadClients();
+        await loadDashboard();
+      } catch(e) {}
+    }
+
+    function bulkWhatsApp() {
+      const visibleClients = getFilteredClients().filter(c => c.status !== "Paid");
+      if (!visibleClients.length) {
+        alert("No clients found to send.");
+        return;
+      }
+
+      if (!confirm("Open WhatsApp messages for " + visibleClients.length + " clients? Allow popups in browser.")) return;
+      visibleClients.forEach(function(c, index) {
+        setTimeout(function() {
+          sendWhatsAppById(c.id);
+        }, index * 1200);
+      });
+    }
+
+    function getFilteredClients() {
+      const searchText = document.getElementById("search").value.trim().toLowerCase();
+      const statusFilter = document.getElementById("statusFilter").value;
+
+      return clients.filter(function(c) {
+        const searchable = (
+          String(c.name || "") + " " +
+          String(c.phone || "") + " " +
+          String(c.contract || "") + " " +
+          String(c.invoiceNo || "") + " " +
+          String(c.notes || "")
+        ).toLowerCase();
+
+        if (searchText && !searchable.includes(searchText)) return false;
+        if (statusFilter && c.status !== statusFilter) return false;
+        return true;
+      });
+    }
+
+    async function deleteClient(id) {
+      if (!confirm("Delete this client?")) return;
+
+      const res = await fetch(API + "/api/clients/" + id, {
+        method: "DELETE"
+      });
+
+      if (!res.ok) {
+        alert("Delete failed");
+        return;
+      }
+
+      await loadClients();
+      await loadDashboard();
+    }
+
+    function editClient(id) {
+      const c = clients.find(function(item) { return item.id === id; });
+      if (!c) return;
+
+      editingId = id;
+      uploadedDocumentData = c.documentData || "";
+      uploadedDocumentName = c.documentName || "";
+
+      document.getElementById("name").value = c.name || "";
+      document.getElementById("phone").value = c.phone || "";
+      document.getElementById("amount").value = c.amount || "";
+      document.getElementById("contract").value = c.contract || "";
+      document.getElementById("dueDate").value = toInputDate(c.dueDate || "");
+      document.getElementById("status").value = c.status || "Pending";
+      document.getElementById("recurring").value = c.recurring || "";
+      document.getElementById("notes").value = c.notes || "";
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    async function markPaid(id) {
+      const res = await fetch(API + "/api/clients/" + id + "/status", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status: "Paid" })
+      });
+
+      if (!res.ok) {
+        alert("Status update failed");
+        return;
+      }
+
+      await loadClients();
+      await loadDashboard();
+    }
+
+    async function markPending(id) {
+      const res = await fetch(API + "/api/clients/" + id + "/status", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status: "Pending" })
+      });
+
+      if (!res.ok) {
+        alert("Status update failed");
+        return;
+      }
+
+      await loadClients();
+      await loadDashboard();
+    }
+
+    function exportCSV() {
+      if (!clients.length) {
+        alert("No clients to export");
+        return;
+      }
+
+      let csv = "Invoice No,Client Name,Phone,Amount,Contract,Due Date,Status,Recurring,Notes,Document Name\n";
+
+      clients.forEach(function(c) {
+        const row = [
+          c.invoiceNo || "",
+          c.name || "",
+          c.phone || "",
+          c.amount || "",
+          c.contract || "",
+          formatDateDisplay(c.dueDate || ""),
+          c.status || "",
+          c.recurring || "",
+          (c.notes || "").replaceAll('"', '""'),
+          c.documentName || ""
+        ].map(function(value) {
+          return '"' + String(value) + '"';
+        }).join(",");
+        csv += row + "\n";
+      });
+
+      const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "clients_export.csv";
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function openDocumentById(id) {
+      const c = clients.find(function(item) { return item.id === id; });
+      if (!c || !c.documentData) {
+        alert("No document uploaded");
+        return;
+      }
+      window.open(c.documentData, "_blank");
+    }
+
+    function printInvoiceById(id) {
+      const c = clients.find(function(item) { return item.id === id; });
+      if (!c) return;
+
+      const invoiceHtml =
+        "<html><head><title>Invoice " + String(c.invoiceNo || "") + "</title>" +
+        "<style>" +
+        "body{font-family:Arial,sans-serif;padding:30px;color:#111827;}" +
+        ".box{max-width:760px;margin:0 auto;border:1px solid #d1d5db;border-radius:16px;padding:24px;}" +
+        ".logo{width:180px;margin-bottom:16px;}" +
+        "h1{color:#0a7f5a;margin:0 0 10px;}" +
+        "table{width:100%;border-collapse:collapse;margin-top:20px;}" +
+        "th,td{border:1px solid #d1d5db;padding:10px;text-align:left;}" +
+        "</style></head><body>" +
+        "<div class='box'>" +
+        "<img class='logo' src='" + window.location.origin + "/logo.png' alt='Logo'>" +
+        "<h1>I M Your Solution</h1>" +
+        "<p><b>Invoice Number:</b> " + String(c.invoiceNo || "") + "</p>" +
+        "<p><b>Client Name:</b> " + String(c.name || "") + "</p>" +
+        "<p><b>Phone:</b> " + String(c.phone || "") + "</p>" +
+        "<table>" +
+        "<tr><th>Contract</th><td>" + String(c.contract || "") + "</td></tr>" +
+        "<tr><th>Amount</th><td>₹" + formatMoney(c.amount || 0) + "</td></tr>" +
+        "<tr><th>Due Date</th><td>" + formatDateDisplay(c.dueDate || "") + "</td></tr>" +
+        "<tr><th>Status</th><td>" + String(c.status || "") + "</td></tr>" +
+        "<tr><th>Recurring Reminder</th><td>" + String(c.recurring || "-") + "</td></tr>" +
+        "<tr><th>Notes</th><td>" + String(c.notes || "-") + "</td></tr>" +
+        "</table>" +
+        "<p style='margin-top:20px;'>UPI ID: " + UPI_ID + "</p>" +
+        "<p style='margin-top:20px;'>Thank you,<br>I M Your Solution</p>" +
+        "</div>" +
+        "<script>window.print();<\/script>" +
+        "</body></html>";
+
+      const w = window.open("", "_blank");
+      w.document.write(invoiceHtml);
+      w.document.close();
+    }
+
+    function makeButton(label, className, onClick) {
+      const btn = document.createElement("button");
+      btn.textContent = label;
+      if (className) btn.className = className;
+      btn.onclick = onClick;
+      return btn;
+    }
+
+    function render() {
+      const list = document.getElementById("list");
+      list.innerHTML = "";
+
+      const visibleClients = getFilteredClients();
+
+      visibleClients.forEach(function(c) {
+        const card = document.createElement("div");
+        card.className = "card list-card " + (c.status === "Paid" ? "paid" : c.status === "Sent" ? "sent" : "pending");
+
+        const title = document.createElement("div");
+        title.innerHTML = "<b>" + (c.name || "") + " (" + (c.invoiceNo || "") + ")</b>";
+        card.appendChild(title);
+
+        [
+          "📱 " + (c.phone || ""),
+          "💰 ₹" + formatMoney(c.amount || 0) + " | " + (c.contract || "-"),
+          "📅 Due: " + formatDateDisplay(c.dueDate || "-"),
+          "🔁 Reminder: " + (c.recurring || "-"),
+          "📝 " + (c.notes || "-"),
+          "🏦 UPI ID: " + UPI_ID
+        ].forEach(function(line) {
+          const row = document.createElement("div");
+          row.className = "meta-line";
+          row.textContent = line;
+          card.appendChild(row);
+        });
+
+        const statusTag = document.createElement("span");
+        statusTag.className = "status-tag";
+        statusTag.textContent = "Status: " + (c.status || "Pending");
+        card.appendChild(statusTag);
+
+        const actions = document.createElement("div");
+        actions.className = "actions";
+
+        actions.appendChild(makeButton("📲 WhatsApp", "wa-btn", function() {
+          sendWhatsAppById(c.id);
+        }));
+        actions.appendChild(makeButton("✔ Paid", "success-btn", function() {
+          markPaid(c.id);
+        }));
+        actions.appendChild(makeButton("⏳ Pending", "secondary-btn", function() {
+          markPending(c.id);
+        }));
+        actions.appendChild(makeButton("✏ Edit", "small-btn", function() {
+          editClient(c.id);
+        }));
+        actions.appendChild(makeButton("🧾 Invoice PDF", "secondary-btn", function() {
+          printInvoiceById(c.id);
+        }));
+        actions.appendChild(makeButton("📎 Document", "secondary-btn", function() {
+          openDocumentById(c.id);
+        }));
+        actions.appendChild(makeButton("❌ Delete", "danger-btn", function() {
+          deleteClient(c.id);
+        }));
+
+        card.appendChild(actions);
+
+        const qr = document.createElement("img");
+        qr.className = "qr";
+        qr.alt = "Payment QR";
+        qr.src = window.location.origin + "/default-qr.jpeg";
+        card.appendChild(qr);
+
+        list.appendChild(card);
+      });
+
+      if (!visibleClients.length) {
+        const empty = document.createElement("div");
+        empty.className = "card list-card";
+        empty.textContent = "No clients found.";
+        list.appendChild(empty);
+      }
+    }
+
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", function() {
+        navigator.serviceWorker.register("sw.js").catch(function() {});
+      });
+    }
+  </script>
+</body>
+</html>
