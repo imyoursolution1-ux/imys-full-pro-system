@@ -3,808 +3,98 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>I M Your Solution</title>
+  <title>I'm Your Solution - Payment Dashboard</title>
   <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#0b5cff" />
   <style>
     :root{
-      --primary:#0a7f5a;
-      --muted:#64748b;
-      --bg:#f4f7fb;
-      --card:#ffffff;
-      --border:#d9e0e7;
-      --shadow:0 10px 24px rgba(15,23,42,.08);
-      --paid:#dcfce7;
-      --pending:#fef3c7;
-      --sent:#dbeafe;
-      --danger:#dc2626;
-      --secondary:#475569;
-      --blue:#2563eb;
-      --wa:#25D366;
+      --primary:#0b5cff;--primary2:#063b9a;--accent:#16a34a;--ink:#0f172a;--muted:#64748b;--bg:#f4f8ff;--card:#ffffff;--border:#d8e4f5;
+      --shadow:0 18px 48px rgba(13,45,95,.14);--paid:#dcfce7;--pending:#fff7ed;--sent:#e0efff;--danger:#dc2626;--secondary:#475569;--wa:#25D366;--gold:#f59e0b;
     }
-
-    * { box-sizing: border-box; }
-
-    body {
-      margin: 0;
-      padding: 18px;
-      background: var(--bg);
-      font-family: Arial, sans-serif;
-      color: #0f172a;
-    }
-
-    .container {
-      max-width: 1220px;
-      margin: 0 auto;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 14px;
-      margin-bottom: 18px;
-      text-align: center;
-      flex-wrap: wrap;
-    }
-
-    .brand img {
-      width: 90px;
-      height: 90px;
-      object-fit: contain;
-      border-radius: 16px;
-      background: white;
-      border: 1px solid var(--border);
-      padding: 8px;
-      box-shadow: var(--shadow);
-    }
-
-    .brand h1 {
-      margin: 0;
-      color: var(--primary);
-      font-size: 40px;
-      line-height: 1.1;
-    }
-
-    .brand p {
-      margin: 6px 0 0;
-      color: var(--muted);
-      font-size: 15px;
-    }
-
-    .card, .login-box, .form-box, .top-box {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      box-shadow: var(--shadow);
-    }
-
-    .login-box, .form-box {
-      padding: 18px;
-      margin-bottom: 18px;
-    }
-
-    .hidden { display: none; }
-
-    .top-cards {
-      display: grid;
-      grid-template-columns: repeat(6, 1fr);
-      gap: 10px;
-      margin-bottom: 18px;
-    }
-
-    .top-box {
-      padding: 16px;
-      text-align: center;
-      font-weight: bold;
-      min-height: 78px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    input, select, textarea, button {
-      width: 100%;
-      padding: 12px 13px;
-      margin: 5px 0;
-      border: 1px solid #cfd8e3;
-      border-radius: 12px;
-      font-size: 14px;
-    }
-
-    textarea {
-      min-height: 88px;
-      resize: vertical;
-    }
-
-    button {
-      border: none;
-      color: white;
-      background: var(--primary);
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    .secondary-btn { background: var(--secondary); }
-    .small-btn { background: var(--blue); }
-    .success-btn { background: #15803d; }
-    .danger-btn { background: var(--danger); }
-    .wa-btn { background: var(--wa); }
-
-    .grid-2 {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-
-    .toolbar {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      margin-top: 8px;
-    }
-
-    .toolbar button {
-      width: auto;
-      min-width: 135px;
-      flex: 1;
-    }
-
-    .list-card {
-      padding: 18px;
-      margin-top: 14px;
-    }
-
-    .paid { background: var(--paid); }
-    .pending { background: var(--pending); }
-    .sent { background: var(--sent); }
-
-    .status-tag {
-      display: inline-block;
-      margin-top: 10px;
-      padding: 7px 12px;
-      border-radius: 999px;
-      font-size: 12px;
-      background: rgba(255,255,255,.78);
-      border: 1px solid rgba(15,23,42,.08);
-    }
-
-    .actions {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      margin-top: 14px;
-    }
-
-    .actions button {
-      width: auto;
-      min-width: 120px;
-      flex: 1;
-    }
-
-    img.qr {
-      margin-top: 14px;
-      border: 1px solid #e5e7eb;
-      border-radius: 12px;
-      padding: 8px;
-      background: #fff;
-      width: 170px;
-      height: 170px;
-      object-fit: contain;
-    }
-
-    .meta-line {
-      margin-top: 4px;
-      color: #1f2937;
-      font-size: 15px;
-    }
-
-    .muted {
-      color: var(--muted);
-      font-size: 13px;
-    }
-
-    @media (max-width: 940px) {
-      .top-cards { grid-template-columns: repeat(2, 1fr); }
-      .grid-2 { grid-template-columns: 1fr; }
-      .brand h1 { font-size: 32px; }
-    }
-
-    @media (max-width: 560px) {
-      .top-cards { grid-template-columns: 1fr; }
-      .brand h1 { font-size: 28px; }
-      .brand img { width: 72px; height: 72px; }
-    }
+    *{box-sizing:border-box} body{margin:0;padding:18px;background:radial-gradient(circle at top left,#d7e9ff,transparent 32%),radial-gradient(circle at top right,#d9fbe9,transparent 28%),var(--bg);font-family:Inter,Arial,sans-serif;color:var(--ink)}
+    .container{max-width:1280px;margin:0 auto}.brand{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:18px;flex-wrap:wrap;padding:18px;background:linear-gradient(135deg,#ffffff,#eef6ff);border:1px solid var(--border);border-radius:24px;box-shadow:var(--shadow)}
+    .brand-left{display:flex;align-items:center;gap:14px}.brand img{width:96px;height:96px;object-fit:contain;border-radius:22px;background:#fff;border:1px solid var(--border);padding:8px;box-shadow:0 12px 32px rgba(11,92,255,.12)}
+    .brand h1{margin:0;color:var(--primary);font-size:39px;line-height:1.04;letter-spacing:-.04em}.brand p{margin:6px 0 0;color:#38a7e0;font-size:15px;font-weight:800}.brand small{display:block;color:var(--muted);margin-top:5px;font-weight:700}.sync-pill{background:#fff;border:1px solid var(--border);border-radius:999px;padding:11px 15px;box-shadow:0 10px 28px rgba(15,23,42,.08);color:var(--secondary);font-size:13px;font-weight:800}
+    .card,.login-box,.form-box,.top-box,.panel{background:rgba(255,255,255,.96);border:1px solid var(--border);border-radius:22px;box-shadow:var(--shadow)}.login-box,.form-box,.panel{padding:18px;margin-bottom:18px}.hidden{display:none}.top-cards{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-bottom:18px}.top-box{padding:18px;text-align:center;min-height:92px;display:flex;flex-direction:column;align-items:center;justify-content:center}.top-box b{font-size:23px;color:var(--ink)}.top-box span{font-size:12px;color:var(--muted);font-weight:900;text-transform:uppercase;letter-spacing:.05em}
+    input,select,textarea,button{width:100%;padding:12px 13px;margin:5px 0;border:1px solid #cfd8e3;border-radius:14px;font-size:14px;outline:none}input:focus,select:focus,textarea:focus{border-color:var(--primary);box-shadow:0 0 0 4px rgba(11,92,255,.09)}textarea{min-height:88px;resize:vertical}button{border:none;color:white;background:linear-gradient(135deg,var(--primary),var(--primary2));font-weight:900;cursor:pointer;letter-spacing:.01em}button:hover{filter:brightness(.96);transform:translateY(-1px)}.secondary-btn{background:linear-gradient(135deg,#64748b,#334155)}.small-btn{background:linear-gradient(135deg,#2563eb,#1d4ed8)}.success-btn{background:linear-gradient(135deg,#16a34a,#15803d)}.danger-btn{background:linear-gradient(135deg,#ef4444,#b91c1c)}.wa-btn{background:linear-gradient(135deg,#25D366,#128C7E);color:#052e16}.sms-btn{background:linear-gradient(135deg,#38bdf8,#2563eb)}.normal-btn{background:linear-gradient(135deg,#f59e0b,#b45309)}.gold-btn{background:linear-gradient(135deg,#f59e0b,#d97706)}
+    .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px}.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}.toolbar button{width:auto;min-width:130px;flex:1}.list-card{padding:18px;margin-top:14px;position:relative;overflow:hidden}.list-card:before{content:"";position:absolute;left:0;top:0;width:6px;height:100%;background:var(--primary)}.paid{background:linear-gradient(120deg,var(--paid),#fff)}.pending{background:linear-gradient(120deg,var(--pending),#fff)}.sent{background:linear-gradient(120deg,var(--sent),#fff)}.status-tag{display:inline-block;margin-top:10px;padding:7px 12px;border-radius:999px;font-size:12px;background:rgba(255,255,255,.82);border:1px solid rgba(15,23,42,.08);font-weight:900}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.actions button{width:auto;min-width:112px;flex:1}.meta-line{margin-top:5px;color:#1f2937;font-size:15px}.muted{color:var(--muted);font-size:13px}.mini{font-size:12px;color:var(--muted)}.progress{height:12px;background:#e5e7eb;border-radius:999px;overflow:hidden}.progress span{display:block;height:100%;background:linear-gradient(90deg,#0b5cff,#22c55e);width:0}.section-title{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}.section-title h3{margin:0}.danger-text{color:var(--danger);font-weight:900}.ok-text{color:#15803d;font-weight:900}.pill-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.pill{padding:8px 12px;border-radius:999px;background:#eef6ff;border:1px solid var(--border);font-size:12px;font-weight:900;color:var(--primary2)}
+    @media(max-width:980px){.top-cards{grid-template-columns:repeat(2,1fr)}.grid-2,.grid-3{grid-template-columns:1fr}.brand h1{font-size:31px}.brand{justify-content:center}.brand-left{justify-content:center;text-align:center;flex-wrap:wrap}}@media(max-width:560px){body{padding:10px}.top-cards{grid-template-columns:1fr}.brand h1{font-size:27px}.brand img{width:76px;height:76px}.toolbar button,.actions button{min-width:100%}}
   </style>
 </head>
 <body>
   <div class="container">
     <div class="brand">
-      <img src="logo.png" alt="Logo">
-      <div>
-        <h1>I M Your Solution</h1>
-        <p>Simplifying Tax; Strengthening Wealth</p><p style="color:#2563eb;font-weight:bold">FINAL VERSION: NO UPI PAYMENT LINK • WhatsApp + Normal SMS • Website Added</p>
-      </div>
+      <div class="brand-left"><img src="logo.png" alt="Logo"><div><h1>I\'M Your Solution</h1><p>Simplifying Tax; Strengthening Wealth</p><small>GST • ITR • Registration • Loans • Insurance • Investment</small></div></div>
+      <div id="syncStatus" class="sync-pill">Google Sheet: checking...</div>
     </div>
 
     <div id="loginSection" class="login-box">
-      <h3 style="margin-top:0">Login</h3>
-      <input id="loginUser" placeholder="Username" />
-      <input id="loginPass" type="password" placeholder="Password" />
+      <h3 style="margin-top:0">🔐 Admin Login</h3>
+      <div class="grid-2"><input id="loginUser" placeholder="Username" value="admin" /><input id="loginPass" type="password" placeholder="Password" /></div>
       <button onclick="login()">Login</button>
-      <div class="muted">Demo login: admin / 1234</div>
+      <div class="muted">Default login: admin / 1234. Google Sheet + Normal/SMS/WhatsApp message version.</div>
     </div>
 
     <div id="appSection" class="hidden">
       <div class="top-cards">
-        <div class="top-box" id="boxTotalClients">Clients 0</div>
-        <div class="top-box" id="boxTotalAmount">Total ₹0</div>
-        <div class="top-box" id="boxPendingAmount">Pending ₹0</div>
-        <div class="top-box" id="boxPaidAmount">Paid ₹0</div>
-        <div class="top-box" id="boxPendingCount">Pending 0</div>
-        <div class="top-box" id="boxPaidCount">Paid 0</div>
+        <div class="top-box"><span>Total Clients</span><b id="boxTotalClients">0</b></div><div class="top-box"><span>Total Billing</span><b id="boxTotalAmount">₹0</b></div><div class="top-box"><span>Pending</span><b id="boxPendingAmount">₹0</b></div><div class="top-box"><span>Paid</span><b id="boxPaidAmount">₹0</b></div><div class="top-box"><span>Sent</span><b id="boxSentCount">0</b></div><div class="top-box"><span>Overdue</span><b id="boxOverdueCount" class="danger-text">0</b></div>
       </div>
+      <div class="panel"><div class="section-title"><h3>📊 Auto Dashboard + Payment Tracking</h3><div class="mini" id="collectionText">Collection 0%</div></div><div class="progress"><span id="collectionBar"></span></div><div class="pill-row"><span class="pill">Google Sheet Sync</span><span class="pill">WhatsApp</span><span class="pill">Normal Message</span><span class="pill">SMS</span><span class="pill">Invoice PDF</span></div></div>
 
       <div class="form-box">
-        <div class="grid-2">
-          <div><input id="search" placeholder="Search client / phone / contract / invoice" oninput="render()" /></div>
-          <div>
-            <select id="statusFilter" onchange="render()">
-              <option value="">All Status</option>
-              <option value="Pending">Pending</option>
-              <option value="Sent">Sent</option>
-              <option value="Paid">Paid</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="grid-2">
-          <div><input id="name" placeholder="Client Name" /></div>
-          <div><input id="phone" placeholder="Mobile Number" /></div>
-          <div><input id="amount" type="number" placeholder="Amount" /></div>
-          <div><input id="contract" placeholder="Contract Name" /></div>
-          <div><input id="dueDate" type="date" /></div>
-          <div>
-            <select id="status">
-              <option value="Pending">Pending</option>
-              <option value="Sent">Sent</option>
-              <option value="Paid">Paid</option>
-            </select>
-          </div>
-          <div>
-            <select id="recurring">
-              <option value="">Recurring Reminder</option>
-              <option value="Daily">Daily</option>
-              <option value="Weekly">Weekly</option>
-              <option value="Monthly">Monthly</option>
-            </select>
-          </div>
-          <div><input id="document" type="file" accept="image/*,.pdf" onchange="handleDocumentUpload(event)" /></div>
-        </div>
-
-        <textarea id="notes" placeholder="Notes"></textarea>
-
-        <div class="toolbar">
-          <button onclick="saveClient()">Save Client</button>
-          <button class="secondary-btn" onclick="clearForm()">Clear</button>
-          <button class="small-btn" onclick="exportCSV()">Export CSV</button>
-          <button class="wa-btn" onclick="bulkWhatsApp()">Bulk WhatsApp</button>
-          <button class="secondary-btn" onclick="saveApiUrl()">Save API URL</button>
-          <button class="secondary-btn" onclick="logout()">Logout</button>
-        </div>
-        <input id="apiUrlInput" placeholder="Backend API URL e.g. https://your-backend.onrender.com" style="margin-top:8px" />
+        <div class="grid-2"><input id="search" placeholder="Search client / phone / contract / invoice" oninput="render()" /><select id="statusFilter" onchange="render()"><option value="">All Status</option><option value="Pending">Pending</option><option value="Sent">Sent</option><option value="Paid">Paid</option><option value="Failed">Failed</option></select></div>
+        <div class="grid-3"><input id="name" placeholder="Client Name" /><input id="phone" placeholder="Mobile Number" /><input id="amount" type="number" placeholder="Amount" /><input id="contract" placeholder="Service / Contract Name" /><input id="dueDate" type="date" /><select id="status"><option value="Pending">Pending</option><option value="Sent">Sent</option><option value="Paid">Paid</option><option value="Failed">Failed</option></select><select id="recurring"><option value="">Reminder Type</option><option value="One Time">One Time</option><option value="Daily">Daily</option><option value="Weekly">Weekly</option><option value="Monthly">Monthly</option></select><input id="upi" placeholder="UPI ID optional" /><select id="messageMode"><option value="WhatsApp">Message Mode: WhatsApp</option><option value="Normal">Normal Message</option><option value="SMS">SMS</option></select></div>
+        <textarea id="notes" placeholder="Notes / Payment details / Service details"></textarea>
+        <input id="document" type="file" accept="image/*,.pdf" onchange="handleDocumentUpload(event)" />
+        <div class="toolbar"><button onclick="saveClient()">💾 Save to Google Sheet</button><button class="secondary-btn" onclick="clearForm()">Clear</button><button class="small-btn" onclick="exportCSV()">Export CSV</button><button class="wa-btn" onclick="bulkWhatsApp()">Bulk WhatsApp</button><button class="gold-btn" onclick="syncFromSheet()">Refresh Sheet</button><button class="secondary-btn" onclick="logout()">Logout</button></div>
+        <div class="mini">Sheet Web App: <span id="sheetUrlText"></span></div>
       </div>
-
       <div id="list"></div>
     </div>
   </div>
 
   <script>
-    const API = localStorage.getItem("IMYS_API_URL") || "https://imys-full-pro-system.onrender.com";
-    let clients = [];
-    let editingId = null;
-    let uploadedDocumentData = "";
-    let uploadedDocumentName = "";
-
-    function formatMoney(value) {
-      return Number(value || 0).toLocaleString("en-IN");
-    }
-
-    function formatDateDisplay(value) {
-      if (!value) return "-";
-      const s = String(value).trim();
-      if (/^\d{4}-\d{2}-\d{2}$/.test(s)) {
-        const p = s.split("-");
-        return p[2] + "-" + p[1] + "-" + p[0];
-      }
-      if (/^\d{2}-\d{2}-\d{4}$/.test(s)) return s;
-      return s;
-    }
-
-    function toInputDate(value) {
-      if (!value) return "";
-      const s = String(value).trim();
-      if (/^\d{4}-\d{2}-\d{2}$/.test(s)) return s;
-      if (/^\d{2}-\d{2}-\d{4}$/.test(s)) {
-        const p = s.split("-");
-        return p[2] + "-" + p[1] + "-" + p[0];
-      }
-      return "";
-    }
-
-    function handleDocumentUpload(event) {
-      const file = event.target.files[0];
-      if (!file) {
-        uploadedDocumentData = "";
-        uploadedDocumentName = "";
-        return;
-      }
-      uploadedDocumentName = file.name;
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        uploadedDocumentData = e.target.result || "";
-      };
-      reader.readAsDataURL(file);
-    }
-
-    async function login() {
-      const username = document.getElementById("loginUser").value.trim();
-      const password = document.getElementById("loginPass").value.trim();
-
-      const res = await fetch(API + "/api/login", {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({ username, password })
-      });
-
-      if (!res.ok) {
-        alert("Invalid login");
-        return;
-      }
-
-      localStorage.setItem("imyoursolution_logged_in", "yes");
-      showApp();
-    }
-
-    function logout() {
-      localStorage.removeItem("imyoursolution_logged_in");
-      location.reload();
-    }
-
-    function showApp() {
-      document.getElementById("loginSection").classList.add("hidden");
-      document.getElementById("appSection").classList.remove("hidden");
-      document.getElementById("apiUrlInput") && (document.getElementById("apiUrlInput").value = API);
-      loadClients();
-      loadDashboard();
-    }
-
-    function saveApiUrl() {
-            const value = document.getElementById("apiUrlInput").value.trim().replace(/\/$/, "");
-      if (!value) return alert("Please enter backend API URL");
-      localStorage.setItem("IMYS_API_URL", value);
-      alert("API URL saved. App will reload now.");
-      location.reload();
-    }
-
-    if (localStorage.getItem("imyoursolution_logged_in") === "yes") {
-      showApp();
-    }
-
-    function clearForm() {
-      editingId = null;
-      uploadedDocumentData = "";
-      uploadedDocumentName = "";
-      document.getElementById("name").value = "";
-      document.getElementById("phone").value = "";
-      document.getElementById("amount").value = "";
-      document.getElementById("contract").value = "";
-      document.getElementById("dueDate").value = "";
-      document.getElementById("status").value = "Pending";
-      document.getElementById("recurring").value = "";
-      document.getElementById("notes").value = "";
-      document.getElementById("document").value = "";
-    }
-
-    async function loadClients() {
-      const res = await fetch(API + "/api/clients");
-      clients = await res.json();
-      render();
-    }
-
-    async function loadDashboard() {
-      const res = await fetch(API + "/api/dashboard");
-      const data = await res.json();
-
-      document.getElementById("boxTotalClients").innerText = "Clients " + (data.totalClients || 0);
-      document.getElementById("boxTotalAmount").innerText = "Total ₹" + formatMoney(data.totalAmount || 0);
-      document.getElementById("boxPendingAmount").innerText = "Pending ₹" + formatMoney(data.pendingAmount || 0);
-      document.getElementById("boxPaidAmount").innerText = "Paid ₹" + formatMoney(data.paidAmount || 0);
-      document.getElementById("boxPendingCount").innerText = "Pending " + (data.pendingCount || 0);
-      document.getElementById("boxPaidCount").innerText = "Paid " + (data.paidCount || 0);
-    }
-
-    async function saveClient() {
-      const payload = {
-        name: document.getElementById("name").value.trim(),
-        phone: document.getElementById("phone").value.trim(),
-        amount: Number(document.getElementById("amount").value || 0),
-        contract: document.getElementById("contract").value.trim(),
-        dueDate: document.getElementById("dueDate").value.trim(),
-        status: document.getElementById("status").value,
-        recurring: document.getElementById("recurring").value,
-        notes: document.getElementById("notes").value.trim(),
-        documentName: uploadedDocumentName,
-        documentData: uploadedDocumentData
-      };
-
-      if (!payload.name || !payload.phone || !payload.amount) {
-        alert("Please fill Client Name, Mobile Number, and Amount.");
-        return;
-      }
-
-      const url = editingId ? API + "/api/clients/" + editingId : API + "/api/clients";
-      const method = editingId ? "PUT" : "POST";
-
-      const res = await fetch(url, {
-        method: method,
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
-      });
-
-      if (!res.ok) {
-        const err = await res.text();
-        alert("Save failed: " + err);
-        return;
-      }
-
-      alert(editingId ? "Client updated successfully ✅" : "Client saved successfully ✅");
-      clearForm();
-      await loadClients();
-      await loadDashboard();
-    }
-
-    function getReasonText(c) {
-      return (String(c.notes || "").trim() || String(c.contract || "").trim() || "Service payment");
-    }
-
-    function getReasonText(c) {
-      return (String(c.notes || "").trim() || String(c.contract || "").trim() || "Service payment");
-    }
-
-    function buildClientMessage(c) {
-      const reason = getReasonText(c);
-      return (
-        "Dear " + (c.name || "Client") + ",
-
-" +
-        "Payment reminder from I M Your Solution.
-
-" +
-        "Service / Reason: " + reason + "
-" +
-        "Contract: " + (c.contract || "-") + "
-" +
-        "Amount Due: ₹" + (c.amount || "") + "
-" +
-        "Due Date: " + formatDateDisplay(c.dueDate || "") + "
-" +
-        "Invoice No: " + (c.invoiceNo || "") + "
-
-" +
-        "Website: https://imyoursolution.com
-" +
-        "IMYOURSOLUTION.COM
-
-" +
-        "This message is only for service/payment information.
-
-" +
-        "Thank you,
-" +
-        "I M Your Solution"
-      );
-    }
-
-    async function sendWhatsAppById(id) {
-      const c = clients.find(function(item) { return item.id === id; });
-      if (!c) return;
-
-      const cleanPhone = String(c.phone || "").replace(/\D/g, "");
-      const finalPhone = cleanPhone.startsWith("91") ? cleanPhone : "91" + cleanPhone;
-
-      const msg = buildClientMessage(c);
-
-      const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-      const waUrl = isMobile
-        ? "https://api.whatsapp.com/send?phone=" + finalPhone + "&text=" + encodeURIComponent(msg)
-        : "https://web.whatsapp.com/send?phone=" + finalPhone + "&text=" + encodeURIComponent(msg);
-
-      window.open(waUrl, "_blank");
-      try {
-        await fetch(API + "/api/clients/" + id + "/status", {
-          method: "PATCH",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ status: "Sent" })
-        });
-        await loadClients();
-        await loadDashboard();
-      } catch(e) {}
-    }
-
-    function sendSMSById(id) {
-      const c = clients.find(function(item) { return item.id === id; });
-      if (!c) return;
-
-      const cleanPhone = String(c.phone || "").replace(/\D/g, "");
-      const msg = buildClientMessage(c);
-      const isApple = /iPhone|iPad|iPod/i.test(navigator.userAgent);
-      const smsUrl = "sms:" + cleanPhone + (isApple ? "&" : "?") + "body=" + encodeURIComponent(msg);
-      window.location.href = smsUrl;
-    }
-
-    function bulkWhatsApp() {
-      const visibleClients = getFilteredClients().filter(c => c.status !== "Paid");
-      if (!visibleClients.length) {
-        alert("No clients found to send.");
-        return;
-      }
-
-      if (!confirm("Open WhatsApp messages for " + visibleClients.length + " clients? Allow popups in browser.")) return;
-      visibleClients.forEach(function(c, index) {
-        setTimeout(function() {
-          sendWhatsAppById(c.id);
-        }, index * 1200);
-      });
-    }
-
-    function getFilteredClients() {
-      const searchText = document.getElementById("search").value.trim().toLowerCase();
-      const statusFilter = document.getElementById("statusFilter").value;
-
-      return clients.filter(function(c) {
-        const searchable = (
-          String(c.name || "") + " " +
-          String(c.phone || "") + " " +
-          String(c.contract || "") + " " +
-          String(c.invoiceNo || "") + " " +
-          String(c.notes || "")
-        ).toLowerCase();
-
-        if (searchText && !searchable.includes(searchText)) return false;
-        if (statusFilter && c.status !== statusFilter) return false;
-        return true;
-      });
-    }
-
-    async function deleteClient(id) {
-      if (!confirm("Delete this client?")) return;
-
-      const res = await fetch(API + "/api/clients/" + id, {
-        method: "DELETE"
-      });
-
-      if (!res.ok) {
-        alert("Delete failed");
-        return;
-      }
-
-      await loadClients();
-      await loadDashboard();
-    }
-
-    function editClient(id) {
-      const c = clients.find(function(item) { return item.id === id; });
-      if (!c) return;
-
-      editingId = id;
-      uploadedDocumentData = c.documentData || "";
-      uploadedDocumentName = c.documentName || "";
-
-      document.getElementById("name").value = c.name || "";
-      document.getElementById("phone").value = c.phone || "";
-      document.getElementById("amount").value = c.amount || "";
-      document.getElementById("contract").value = c.contract || "";
-      document.getElementById("dueDate").value = toInputDate(c.dueDate || "");
-      document.getElementById("status").value = c.status || "Pending";
-      document.getElementById("recurring").value = c.recurring || "";
-      document.getElementById("notes").value = c.notes || "";
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-
-    async function markPaid(id) {
-      const res = await fetch(API + "/api/clients/" + id + "/status", {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ status: "Paid" })
-      });
-
-      if (!res.ok) {
-        alert("Status update failed");
-        return;
-      }
-
-      await loadClients();
-      await loadDashboard();
-    }
-
-    async function markPending(id) {
-      const res = await fetch(API + "/api/clients/" + id + "/status", {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ status: "Pending" })
-      });
-
-      if (!res.ok) {
-        alert("Status update failed");
-        return;
-      }
-
-      await loadClients();
-      await loadDashboard();
-    }
-
-    function exportCSV() {
-      if (!clients.length) {
-        alert("No clients to export");
-        return;
-      }
-
-      let csv = "Invoice No,Client Name,Phone,Amount,Contract,Due Date,Status,Recurring,Notes,Document Name\n";
-
-      clients.forEach(function(c) {
-        const row = [
-          c.invoiceNo || "",
-          c.name || "",
-          c.phone || "",
-          c.amount || "",
-          c.contract || "",
-          formatDateDisplay(c.dueDate || ""),
-          c.status || "",
-          c.recurring || "",
-          (c.notes || "").replaceAll('"', '""'),
-          c.documentName || ""
-        ].map(function(value) {
-          return '"' + String(value) + '"';
-        }).join(",");
-        csv += row + "\n";
-      });
-
-      const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "clients_export.csv";
-      a.click();
-      URL.revokeObjectURL(url);
-    }
-
-    function openDocumentById(id) {
-      const c = clients.find(function(item) { return item.id === id; });
-      if (!c || !c.documentData) {
-        alert("No document uploaded");
-        return;
-      }
-      window.open(c.documentData, "_blank");
-    }
-
-    function printInvoiceById(id) {
-      const c = clients.find(function(item) { return item.id === id; });
-      if (!c) return;
-
-      const invoiceHtml =
-        "<html><head><title>Invoice " + String(c.invoiceNo || "") + "</title>" +
-        "<style>" +
-        "body{font-family:Arial,sans-serif;padding:30px;color:#111827;}" +
-        ".box{max-width:760px;margin:0 auto;border:1px solid #d1d5db;border-radius:16px;padding:24px;}" +
-        ".logo{width:180px;margin-bottom:16px;}" +
-        "h1{color:#0a7f5a;margin:0 0 10px;}" +
-        "table{width:100%;border-collapse:collapse;margin-top:20px;}" +
-        "th,td{border:1px solid #d1d5db;padding:10px;text-align:left;}" +
-        "</style></head><body>" +
-        "<div class='box'>" +
-        "<img class='logo' src='" + window.location.origin + "/logo.png' alt='Logo'>" +
-        "<h1>I M Your Solution</h1>" +
-        "<p><b>Invoice Number:</b> " + String(c.invoiceNo || "") + "</p>" +
-        "<p><b>Client Name:</b> " + String(c.name || "") + "</p>" +
-        "<p><b>Phone:</b> " + String(c.phone || "") + "</p>" +
-        "<table>" +
-        "<tr><th>Contract</th><td>" + String(c.contract || "") + "</td></tr>" +
-        "<tr><th>Amount</th><td>₹" + formatMoney(c.amount || 0) + "</td></tr>" +
-        "<tr><th>Due Date</th><td>" + formatDateDisplay(c.dueDate || "") + "</td></tr>" +
-        "<tr><th>Status</th><td>" + String(c.status || "") + "</td></tr>" +
-        "<tr><th>Recurring Reminder</th><td>" + String(c.recurring || "-") + "</td></tr>" +
-        "<tr><th>Notes</th><td>" + String(c.notes || "-") + "</td></tr>" +
-        "</table>" +
-        "<p style='margin-top:20px;'>Thank you,<br>I M Your Solution</p>" +
-        "</div>" +
-        "<script>window.print();<\/script>" +
-        "</body></html>";
-
-      const w = window.open("", "_blank");
-      w.document.write(invoiceHtml);
-      w.document.close();
-    }
-
-    function makeButton(label, className, onClick) {
-      const btn = document.createElement("button");
-      btn.textContent = label;
-      if (className) btn.className = className;
-      btn.onclick = onClick;
-      return btn;
-    }
-
-    function render() {
-      const list = document.getElementById("list");
-      list.innerHTML = "";
-
-      const visibleClients = getFilteredClients();
-
-      visibleClients.forEach(function(c) {
-        const card = document.createElement("div");
-        card.className = "card list-card " + (c.status === "Paid" ? "paid" : c.status === "Sent" ? "sent" : "pending");
-
-        const title = document.createElement("div");
-        title.innerHTML = "<b>" + (c.name || "") + " (" + (c.invoiceNo || "") + ")</b>";
-        card.appendChild(title);
-
-        [
-          "📱 " + (c.phone || ""),
-          "💰 ₹" + formatMoney(c.amount || 0) + " | " + (c.contract || "-"),
-          "📅 Due: " + formatDateDisplay(c.dueDate || "-"),
-          "🔁 Reminder: " + (c.recurring || "-"),
-          "📝 " + (c.notes || "-")
-        ].forEach(function(line) {
-          const row = document.createElement("div");
-          row.className = "meta-line";
-          row.textContent = line;
-          card.appendChild(row);
-        });
-
-        const statusTag = document.createElement("span");
-        statusTag.className = "status-tag";
-        statusTag.textContent = "Status: " + (c.status || "Pending");
-        card.appendChild(statusTag);
-
-        const actions = document.createElement("div");
-        actions.className = "actions";
-
-        actions.appendChild(makeButton("📲 WhatsApp", "wa-btn", function() {
-          sendWhatsAppById(c.id);
-        }));
-        actions.appendChild(makeButton("✉ Normal SMS", "small-btn", function() {
-          sendSMSById(c.id);
-        }));
-        actions.appendChild(makeButton("✔ Paid", "success-btn", function() {
-          markPaid(c.id);
-        }));
-        actions.appendChild(makeButton("⏳ Pending", "secondary-btn", function() {
-          markPending(c.id);
-        }));
-        actions.appendChild(makeButton("✏ Edit", "small-btn", function() {
-          editClient(c.id);
-        }));
-        actions.appendChild(makeButton("🧾 Invoice PDF", "secondary-btn", function() {
-          printInvoiceById(c.id);
-        }));
-        actions.appendChild(makeButton("📎 Document", "secondary-btn", function() {
-          openDocumentById(c.id);
-        }));
-        actions.appendChild(makeButton("❌ Delete", "danger-btn", function() {
-          deleteClient(c.id);
-        }));
-
-        card.appendChild(actions);
-
-        list.appendChild(card);
-      });
-
-      if (!visibleClients.length) {
-        const empty = document.createElement("div");
-        empty.className = "card list-card";
-        empty.textContent = "No clients found.";
-        list.appendChild(empty);
-      }
-    }
+    const SHEET_URL = "https://script.google.com/macros/s/AKfycbyxhC9T7nllpJEl9rs_n8lUYGz7amizcJHp-177QWDdosI7NPHN2YjXDDHSjvkOqvx3/exec";
+    const DEFAULT_UPI = "9529615972@HDFC";
+    let clients = [], editingId = null, uploadedDocumentData = "", uploadedDocumentName = "";
+    const $ = id => document.getElementById(id);
+    const uid = () => "IMYS-" + Date.now().toString(36).toUpperCase() + "-" + Math.random().toString(36).slice(2,6).toUpperCase();
+    function formatMoney(value){return Number(value||0).toLocaleString("en-IN");}
+    function todayISO(){return new Date().toISOString().slice(0,10);}
+    function isOverdue(c){return c.status !== "Paid" && c.dueDate && c.dueDate < todayISO();}
+    function formatDateDisplay(value){if(!value)return "-"; const s=String(value).trim(); if(/^\d{4}-\d{2}-\d{2}$/.test(s)){const p=s.split("-"); return p[2]+"-"+p[1]+"-"+p[0];} return s;}
+    function toInputDate(value){if(!value)return ""; const s=String(value).trim(); if(/^\d{4}-\d{2}-\d{2}$/.test(s))return s; if(/^\d{2}-\d{2}-\d{4}$/.test(s)){const p=s.split("-"); return p[2]+"-"+p[1]+"-"+p[0];} return "";}
+    function normalizePhone(phone){let p=String(phone||"").replace(/\D/g,""); if(p.length===10)p="91"+p; return p;}
+    function setSync(text, ok){$("syncStatus").textContent=text; $("syncStatus").className="sync-pill "+(ok?"ok-text":"danger-text");}
+    function handleDocumentUpload(event){const file=event.target.files[0]; if(!file){uploadedDocumentData=""; uploadedDocumentName=""; return;} uploadedDocumentName=file.name; const reader=new FileReader(); reader.onload=e=>uploadedDocumentData=e.target.result||""; reader.readAsDataURL(file);}
+    async function sheetRequest(action, data){try{const res=await fetch(SHEET_URL,{method:"POST",mode:"cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(Object.assign({action},data||{}))}); const text=await res.text(); try{return JSON.parse(text);}catch(e){return {ok:res.ok,text};}}catch(err){return {ok:false,error:String(err)};}}
+    async function syncFromSheet(){setSync("Google Sheet: syncing...",true); try{let res=await fetch(SHEET_URL+"?action=list&ts="+Date.now(),{method:"GET",mode:"cors"}); let data=await res.json(); let arr=Array.isArray(data)?data:(data.clients||data.data||data.rows||[]); clients=Array.isArray(arr)?arr.map(normalizeClient):[]; render(); updateDashboard(); setSync(clients.length?"Google Sheet: connected":"Google Sheet connected, no rows found",true);}catch(e){clients=[]; render(); updateDashboard(); setSync("Google Sheet not readable. Check Apps Script deployment/CORS.",false);}}
+    function normalizeClient(c){return {id:String(c.id||c.ID||c.InvoiceNo||c.invoiceNo||uid()), invoiceNo:String(c.invoiceNo||c.InvoiceNo||c["Invoice No"]||""), name:String(c.name||c.Name||c["Client Name"]||""), phone:String(c.phone||c.Phone||c.Mobile||""), amount:Number(c.amount||c.Amount||0), contract:String(c.contract||c.Contract||c.Service||""), dueDate:toInputDate(c.dueDate||c.DueDate||c["Due Date"]||""), status:String(c.status||c.Status||"Pending"), recurring:String(c.recurring||c.Recurring||""), upi:String(c.upi||c.UPI||""), messageMode:String(c.messageMode||c.MessageMode||c["Message Mode"]||"WhatsApp"), notes:String(c.notes||c.Notes||""), documentName:String(c.documentName||c.DocumentName||""), documentData:String(c.documentData||"")};}
+    async function login(){const u=$("loginUser").value.trim(), p=$("loginPass").value.trim(); if(u==="admin"&&p==="1234"){localStorage.setItem("imyoursolution_logged_in","yes"); showApp();} else alert("Invalid login");}
+    function logout(){localStorage.removeItem("imyoursolution_logged_in"); location.reload();}
+    function showApp(){$("loginSection").classList.add("hidden"); $("appSection").classList.remove("hidden"); $("sheetUrlText").textContent=SHEET_URL; syncFromSheet();}
+    if(localStorage.getItem("imyoursolution_logged_in")==="yes") showApp(); else {if($("sheetUrlText")) $("sheetUrlText").textContent=SHEET_URL;}
+    function getPayload(){return {id:editingId||uid(), invoiceNo:editingId?((clients.find(c=>c.id===editingId)||{}).invoiceNo||editingId):"IMYS-"+String(clients.length+1).padStart(3,"0"), name:$("name").value.trim(), phone:$("phone").value.trim(), amount:Number($("amount").value||0), contract:$("contract").value.trim(), dueDate:$("dueDate").value.trim(), status:$("status").value, recurring:$("recurring").value, upi:$("upi").value.trim(), messageMode:$("messageMode").value, notes:$("notes").value.trim(), documentName:uploadedDocumentName, documentData:uploadedDocumentData};}
+    async function saveClient(){const p=getPayload(); if(!p.name||!p.phone||!p.amount){alert("Please fill Client Name, Mobile Number, and Amount."); return;} const i=clients.findIndex(c=>c.id===p.id); if(i>=0)clients[i]=p; else clients.unshift(p); render(); updateDashboard(); const sheet=await sheetRequest(i>=0?"update":"create",{client:p}); if(sheet.ok===false){setSync("Google Sheet save failed. Check Apps Script.",false); alert("Google Sheet save failed. Please check Apps Script deployment."); return;} setSync("Saved to Google Sheet",true); clearForm(false); alert("Client saved successfully ✅");}
+    function clearForm(resetEdit=true){if(resetEdit)editingId=null; uploadedDocumentData=""; uploadedDocumentName=""; ["name","phone","amount","contract","dueDate","upi","notes"].forEach(id=>$(id).value=""); $("status").value="Pending"; $("recurring").value=""; $("messageMode").value="WhatsApp"; $("document").value="";}
+    function updateDashboard(){const total=clients.reduce((s,c)=>s+Number(c.amount||0),0), paid=clients.filter(c=>c.status==="Paid").reduce((s,c)=>s+Number(c.amount||0),0), pending=clients.filter(c=>c.status!=="Paid").reduce((s,c)=>s+Number(c.amount||0),0); const pct=total?Math.round((paid/total)*100):0; $("boxTotalClients").textContent=clients.length; $("boxTotalAmount").textContent="₹"+formatMoney(total); $("boxPendingAmount").textContent="₹"+formatMoney(pending); $("boxPaidAmount").textContent="₹"+formatMoney(paid); $("boxSentCount").textContent=clients.filter(c=>c.status==="Sent").length; $("boxOverdueCount").textContent=clients.filter(isOverdue).length; $("collectionText").textContent="Collection "+pct+"% | Paid ₹"+formatMoney(paid)+" of ₹"+formatMoney(total); $("collectionBar").style.width=pct+"%";}
+    function getReasonText(c){return String(c.notes||"").trim()||String(c.contract||"").trim()||"Service payment";}
+    function getUpiId(c){return (c.upi||DEFAULT_UPI||"").trim();}
+    function buildClientMessage(c){const upi=getUpiId(c); return "Dear "+(c.name||"Client")+",\n\nPayment request from I\'M Your Solution.\nWebsite: IMYOURSOLUTION.COM\nLink: https://imyoursolution.com\n\nService / Reason: "+getReasonText(c)+"\nInvoice No: "+(c.invoiceNo||"-")+"\nAmount Due: ₹"+(c.amount||0)+"\nDue Date: "+formatDateDisplay(c.dueDate||"")+"\nStatus: "+(c.status||"Pending")+(upi?"\n\nPayment UPI ID: "+upi:"")+"\n\nPlease complete your payment and share screenshot after payment.\n\nThank you,\nI\'M Your Solution\nIMYOURSOLUTION.COM";}
+    async function patchStatus(id,status){const c=clients.find(x=>x.id===id); if(!c)return; c.status=status; render(); updateDashboard(); const sheet=await sheetRequest("status",{id,status,client:c}); if(sheet.ok===false)setSync("Status not saved to Google Sheet",false);}
+    function sendWhatsAppById(id){const c=clients.find(x=>x.id===id); if(!c)return; window.open("https://wa.me/"+normalizePhone(c.phone)+"?text="+encodeURIComponent(buildClientMessage(c)),"_blank"); patchStatus(id,"Sent");}
+    function sendSmsById(id){const c=clients.find(x=>x.id===id); if(!c)return; window.location.href="sms:"+normalizePhone(c.phone)+"?body="+encodeURIComponent(buildClientMessage(c)); patchStatus(id,"Sent");}
+    async function copyNormalMessageById(id){const c=clients.find(x=>x.id===id); if(!c)return; const msg=buildClientMessage(c); try{await navigator.clipboard.writeText(msg); alert("Normal message copied. Paste in any app/SMS/email.");}catch(e){prompt("Copy this message:",msg);} patchStatus(id,"Sent");}
+    function sendPreferredById(id){const c=clients.find(x=>x.id===id); if(!c)return; const mode=c.messageMode||"WhatsApp"; if(mode==="SMS") return sendSmsById(id); if(mode==="Normal") return copyNormalMessageById(id); return sendWhatsAppById(id);}
+    function bulkWhatsApp(){const arr=getFilteredClients().filter(c=>c.status!=="Paid"); if(!arr.length)return alert("No unpaid clients found."); if(!confirm("Open WhatsApp messages for "+arr.length+" clients? Allow popups."))return; arr.forEach((c,i)=>setTimeout(()=>sendWhatsAppById(c.id),i*1100));}
+    function getFilteredClients(){const s=$("search").value.trim().toLowerCase(), f=$("statusFilter").value; return clients.filter(c=>{const all=(c.name+" "+c.phone+" "+c.contract+" "+c.invoiceNo+" "+c.notes).toLowerCase(); return (!s||all.includes(s))&&(!f||c.status===f);});}
+    async function deleteClient(id){if(!confirm("Delete this client?"))return; clients=clients.filter(c=>c.id!==id); render(); updateDashboard(); const sheet=await sheetRequest("delete",{id}); if(sheet.ok===false)setSync("Delete not saved to Google Sheet",false);}
+    function editClient(id){const c=clients.find(x=>x.id===id); if(!c)return; editingId=id; uploadedDocumentData=c.documentData||""; uploadedDocumentName=c.documentName||""; ["name","phone","amount","contract","dueDate","status","recurring","upi","messageMode","notes"].forEach(k=>{if($(k))$(k).value=k==="dueDate"?toInputDate(c[k]||""):(c[k]||"");}); scrollTo({top:0,behavior:"smooth"});}
+    function exportCSV(){if(!clients.length)return alert("No clients to export"); const head=["Invoice No","Client Name","Phone","Amount","Contract","Due Date","Status","Recurring","Message Mode","UPI","Notes"]; let csv=head.join(",")+"\n"; clients.forEach(c=>{csv+=[c.invoiceNo,c.name,c.phone,c.amount,c.contract,formatDateDisplay(c.dueDate),c.status,c.recurring,c.messageMode,c.upi,c.notes].map(v=>'"'+String(v||"").replaceAll('"','""')+'"').join(",")+"\n";}); const b=new Blob([csv],{type:"text/csv;charset=utf-8;"}); const u=URL.createObjectURL(b); const a=document.createElement("a"); a.href=u; a.download="imys_payment_clients.csv"; a.click(); URL.revokeObjectURL(u);}
+    function openDocumentById(id){const c=clients.find(x=>x.id===id); if(!c||!c.documentData)return alert("No document uploaded"); window.open(c.documentData,"_blank");}
+    function printInvoiceById(id){const c=clients.find(x=>x.id===id); if(!c)return; const h=`<html><head><title>Invoice ${c.invoiceNo||""}</title><style>body{font-family:Arial;padding:30px;color:#111827;background:#f4f8ff}.box{max-width:760px;margin:auto;border:1px solid #d1d5db;border-radius:22px;padding:26px;background:white}.logo{width:160px}h1{color:#0b5cff}table{width:100%;border-collapse:collapse;margin-top:20px}td,th{border:1px solid #d1d5db;padding:10px;text-align:left}.wm{position:fixed;top:45%;left:12%;font-size:52px;color:rgba(11,92,255,.08);transform:rotate(-25deg);font-weight:bold}</style></head><body><div class="wm">I\'M Your Solution</div><div class="box"><img class="logo" src="logo.png"><h1>I\'M Your Solution</h1><p><b>Invoice:</b> ${c.invoiceNo||""}</p><p><b>Client:</b> ${c.name||""} | ${c.phone||""}</p><table><tr><th>Service</th><td>${c.contract||"-"}</td></tr><tr><th>Amount</th><td>₹${formatMoney(c.amount)}</td></tr><tr><th>Due Date</th><td>${formatDateDisplay(c.dueDate)}</td></tr><tr><th>Status</th><td>${c.status||"Pending"}</td></tr><tr><th>Payment UPI ID</th><td>${getUpiId(c)||"Contact office"}</td></tr><tr><th>Message Mode</th><td>${c.messageMode||"WhatsApp"}</td></tr><tr><th>Notes</th><td>${c.notes||"-"}</td></tr></table><p><b>Website:</b> IMYOURSOLUTION.COM<br><b>Link:</b> https://imyoursolution.com<br>Thank you,<br>I\'M Your Solution</p></div><script>window.print()<\/script></body></html>`; const w=window.open("","_blank"); w.document.write(h); w.document.close();}
+    function makeButton(label, cls, fn){const b=document.createElement("button"); b.textContent=label; if(cls)b.className=cls; b.onclick=fn; return b;}
+    function render(){const list=$("list"); list.innerHTML=""; const arr=getFilteredClients(); arr.forEach(c=>{const card=document.createElement("div"); card.className="card list-card "+(c.status==="Paid"?"paid":c.status==="Sent"?"sent":"pending"); const title=document.createElement("div"); title.innerHTML="<b>"+(c.name||"")+" ("+(c.invoiceNo||"")+")</b> "+(isOverdue(c)?"<span class='danger-text'>OVERDUE</span>":""); card.appendChild(title); ["📱 "+(c.phone||""),"💰 ₹"+formatMoney(c.amount||0)+" | "+(c.contract||"-"),"📅 Due: "+formatDateDisplay(c.dueDate||"-"),"🔁 Reminder: "+(c.recurring||"-"),"💬 Mode: "+(c.messageMode||"WhatsApp"),"📝 "+(c.notes||"-")].forEach(line=>{const r=document.createElement("div"); r.className="meta-line"; r.textContent=line; card.appendChild(r);}); const tag=document.createElement("span"); tag.className="status-tag"; tag.textContent="Status: "+(c.status||"Pending"); card.appendChild(tag); const actions=document.createElement("div"); actions.className="actions"; actions.appendChild(makeButton("📲 WhatsApp","wa-btn",()=>sendWhatsAppById(c.id))); actions.appendChild(makeButton("💬 Normal Msg","normal-btn",()=>copyNormalMessageById(c.id))); actions.appendChild(makeButton("✉ SMS","sms-btn",()=>sendSmsById(c.id))); actions.appendChild(makeButton("🚀 Preferred","small-btn",()=>sendPreferredById(c.id))); actions.appendChild(makeButton("✔ Paid","success-btn",()=>patchStatus(c.id,"Paid"))); actions.appendChild(makeButton("⏳ Pending","secondary-btn",()=>patchStatus(c.id,"Pending"))); actions.appendChild(makeButton("✏ Edit","small-btn",()=>editClient(c.id))); actions.appendChild(makeButton("🧾 Invoice PDF","secondary-btn",()=>printInvoiceById(c.id))); actions.appendChild(makeButton("📎 Document","secondary-btn",()=>openDocumentById(c.id))); actions.appendChild(makeButton("❌ Delete","danger-btn",()=>deleteClient(c.id))); card.appendChild(actions); list.appendChild(card);}); if(!arr.length){const e=document.createElement("div"); e.className="card list-card"; e.textContent="No clients found."; list.appendChild(e);} updateDashboard();}
   </script>
 </body>
 </html>
