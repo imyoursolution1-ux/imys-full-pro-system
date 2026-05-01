@@ -281,7 +281,7 @@
           <div><input id="document" type="file" accept="image/*,.pdf" onchange="handleDocumentUpload(event)" /></div>
         </div>
 
-        <textarea id="notes" placeholder="Remark / Service reason (example: ITR Filing, GST Return, Loan File Charges)"></textarea>
+        <textarea id="notes" placeholder="Remark / Reason for payment (example: ITR Filing, GST Return, Loan File Charges)"></textarea>
 
         <div class="toolbar">
           <button onclick="saveClient()">Save Client</button>
@@ -301,7 +301,7 @@
   <script>
     const API = localStorage.getItem("IMYS_API_URL") || "https://imys-full-pro-system.onrender.com";
     const WEBSITE = "https://imyoursolution.com";
-    const UPI_ID = "9529615972@ybl";
+    const WEBSITE_DISPLAY = "IMYOURSOLUTION.COM";
 
     let clients = [];
     let editingId = null;
@@ -382,7 +382,7 @@
     }
 
     function saveApiUrl() {
-      const value = document.getElementById("apiUrlInput").value.trim().replace(/\/$/, "");
+      const value = document.getElementById("apiUrlInput").value.trim().replace(/\/, "");
       if (!value) return alert("Please enter backend API URL");
       localStorage.setItem("IMYS_API_URL", value);
       alert("API URL saved. App will reload now.");
@@ -472,41 +472,23 @@
 
       const cleanPhone = String(c.phone || "").replace(/\D/g, "");
       const finalPhone = cleanPhone.startsWith("91") ? cleanPhone : "91" + cleanPhone;
-      const serviceReason = (c.notes || c.contract || "Service payment").trim();
+
+      const contractName = (c.contract || "Service").trim();
+      const remarkReason = (c.notes || c.remark || c.serviceReason || c.contract || "Service charges").trim();
 
       const msg =
-        "Dear " + (c.name || "") + ",
-
-" +
-        "Payment reminder from I M Your Solution.
-
-" +
-        "Invoice No: " + (c.invoiceNo || "") + "
-" +
-        "Service / Reason: " + serviceReason + "
-" +
-        "Contract: " + (c.contract || "-") + "
-" +
-        "Amount Due: ₹" + (c.amount || "") + "
-" +
-        "Due Date: " + formatDateDisplay(c.dueDate || "") + "
-
-" +
-        "Firm Website: " + WEBSITE + "
-" +
-        "UPI ID for payment: " + UPI_ID + "
-
-" +
-        "Kindly make the payment for the above service/reason.
-" +
-        "Invoice PDF is available from our billing system.
-
-" +
-        "Thank you,
-" +
-        "I M Your Solution
-" +
-        "imyoursolution.com";
+        "Dear " + (c.name || "Client") + ",\n\n" +
+        "Payment reminder from I M Your Solution.\n\n" +
+        "Service / Work: " + contractName + "\n" +
+        "Remark / Reason: " + remarkReason + "\n" +
+        "Amount Due: ₹" + (c.amount || "") + "\n" +
+        "Due Date: " + formatDateDisplay(c.dueDate || "") + "\n" +
+        "Invoice No: " + (c.invoiceNo || "") + "\n\n" +
+        "Website: " + WEBSITE_DISPLAY + "\n" +
+        WEBSITE + "\n\n" +
+        "Kindly complete the payment for the above service/reason.\n\n" +
+        "Thank you,\n" +
+        "I M Your Solution";
 
       const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
       const waUrl = isMobile
@@ -696,10 +678,9 @@
         "<tr><th>Due Date</th><td>" + formatDateDisplay(c.dueDate || "") + "</td></tr>" +
         "<tr><th>Status</th><td>" + String(c.status || "") + "</td></tr>" +
         "<tr><th>Recurring Reminder</th><td>" + String(c.recurring || "-") + "</td></tr>" +
-        "<tr><th>Service / Reason</th><td>" + String(c.notes || c.contract || "-") + "</td></tr>" +
+        "<tr><th>Notes</th><td>" + String(c.notes || "-") + "</td></tr>" +
         "</table>" +
-        "<p style='margin-top:20px;'>Website: https://imyoursolution.com</p>" +
-        "<p>UPI ID: " + UPI_ID + "</p>" +
+        "<p style='margin-top:20px;'>Website: " + WEBSITE_DISPLAY + "</p>" +
         "<p style='margin-top:20px;'>Thank you,<br>I M Your Solution</p>" +
         "</div>" +
         "<script>window.print();<\/script>" +
@@ -737,8 +718,8 @@
           "💰 ₹" + formatMoney(c.amount || 0) + " | " + (c.contract || "-"),
           "📅 Due: " + formatDateDisplay(c.dueDate || "-"),
           "🔁 Reminder: " + (c.recurring || "-"),
-          "🧾 Service / Reason: " + (c.notes || c.contract || "-"),
-          "🌐 Website: https://imyoursolution.com"
+          "📝 " + (c.notes || "-"),
+          "🌐 Website: " + WEBSITE_DISPLAY
         ].forEach(function(line) {
           const row = document.createElement("div");
           row.className = "meta-line";
@@ -778,27 +759,27 @@
 
         card.appendChild(actions);
 
-        const qr = document.createElement("img");
-        qr.className = "qr";
-        qr.alt = "Payment QR";
-        qr.src = window.location.origin + "/default-qr.jpeg";
-        card.appendChild(qr);
-
         list.appendChild(card);
       });
 
       if (!visibleClients.length) {
         const empty = document.createElement("div");
         empty.className = "card list-card";
-        empty.textContent = "No clients found in current search/filter. Clear search box or select All Status.";
+        empty.textContent = "No clients found.";
         list.appendChild(empty);
       }
     }
 
+    // Disable old service-worker cache so latest updates show immediately.
     if ("serviceWorker" in navigator) {
-      window.addEventListener("load", function() {
-        navigator.serviceWorker.register("sw.js").catch(function() {});
-      });
+      navigator.serviceWorker.getRegistrations().then(function(registrations) {
+        registrations.forEach(function(registration) { registration.unregister(); });
+      }).catch(function() {});
+    }
+    if (window.caches) {
+      caches.keys().then(function(keys) {
+        keys.forEach(function(key) { caches.delete(key); });
+      }).catch(function() {});
     }
   </script>
 </body>
