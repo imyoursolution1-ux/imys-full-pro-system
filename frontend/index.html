@@ -222,7 +222,7 @@
       <img src="logo.png" alt="Logo">
       <div>
         <h1>I M Your Solution</h1>
-        <p>Simplifying Tax; Strengthening Wealth</p>
+        <p>Simplifying Tax; Strengthening Wealth</p><p style="color:#2563eb;font-weight:bold">FINAL VERSION: NO UPI PAYMENT LINK • WhatsApp + Normal SMS • Website Added</p>
       </div>
     </div>
 
@@ -464,24 +464,44 @@
     }
 
     function getReasonText(c) {
-      const reason = String(c.notes || "").trim() || String(c.contract || "").trim() || "Service payment";
-      return reason;
+      return (String(c.notes || "").trim() || String(c.contract || "").trim() || "Service payment");
+    }
+
+    function getReasonText(c) {
+      return (String(c.notes || "").trim() || String(c.contract || "").trim() || "Service payment");
     }
 
     function buildClientMessage(c) {
       const reason = getReasonText(c);
       return (
-        "Dear " + (c.name || "Client") + ",\n\n" +
-        "Payment reminder from I M Your Solution.\n\n" +
-        "Service / Reason: " + reason + "\n" +
-        "Contract: " + (c.contract || "-") + "\n" +
-        "Amount Due: ₹" + (c.amount || "") + "\n" +
-        "Due Date: " + formatDateDisplay(c.dueDate || "") + "\n" +
-        "Invoice No: " + (c.invoiceNo || "") + "\n\n" +
-        "Website: https://imyoursolution.com\n\n" +
-        "Please contact us for payment confirmation or service support.\n\n" +
-        "Thank you,\n" +
-        "IMYOURSOLUTION.COM"
+        "Dear " + (c.name || "Client") + ",
+
+" +
+        "Payment reminder from I M Your Solution.
+
+" +
+        "Service / Reason: " + reason + "
+" +
+        "Contract: " + (c.contract || "-") + "
+" +
+        "Amount Due: ₹" + (c.amount || "") + "
+" +
+        "Due Date: " + formatDateDisplay(c.dueDate || "") + "
+" +
+        "Invoice No: " + (c.invoiceNo || "") + "
+
+" +
+        "Website: https://imyoursolution.com
+" +
+        "IMYOURSOLUTION.COM
+
+" +
+        "This message is only for service/payment information.
+
+" +
+        "Thank you,
+" +
+        "I M Your Solution"
       );
     }
 
