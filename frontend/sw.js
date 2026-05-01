@@ -1,6 +1,6 @@
-// IMYS service worker disabled to remove old cached files.
-self.addEventListener('install', event => { self.skipWaiting(); });
+// IMYS service worker: clears old cached app so Google-Sheet-only UI loads fresh.
+self.addEventListener('install', event => self.skipWaiting());
 self.addEventListener('activate', event => {
   event.waitUntil(caches.keys().then(keys => Promise.all(keys.map(key => caches.delete(key)))).then(() => self.clients.claim()));
 });
-self.addEventListener('fetch', event => { event.respondWith(fetch(event.request, { cache: 'no-store' })); });
+self.addEventListener('fetch', event => event.respondWith(fetch(event.request)));
